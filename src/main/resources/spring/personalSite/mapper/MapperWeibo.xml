@@ -1,0 +1,93 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 和 java mapper 的类名一样，从包名开始打，有自动补全-->
+<mapper namespace="spring.personalSite.mapper.MapperWeibo">
+    <select id="timelineWeibos" resultType="spring.personalSite.model.Weibo">
+        select * from weibo
+        join follow on follow.followeeId = weibo.userId
+        where follow.followerId = #{userId}
+    </select>
+
+    <select id="commentsFromWeibo" resultType="spring.personalSite.model.Comment">
+        SELECT * FROM comment
+        WHERE weiboId = #{weiboId}
+    </select>
+
+    <select id="weibosFromUserId" resultType="spring.personalSite.model.Weibo">
+        SELECT * FROM weibo WHERE userId = #{userId}
+    </select>
+
+    <insert id="addWeibo">
+        INSERT INTO weibo (content, userId) VALUES (#{content}, #{userId})
+    </insert>
+
+    <insert id="addFollowee">
+        INSERT INTO follow (followerId, followeeId) VALUES (#{followerId}, #{followeeId})
+    </insert>
+
+    <insert id="addWeiboComment">
+        INSERT INTO comment (content, userId, weiboId) VALUES (#{content}, #{userId}, #{weiboId})
+    </insert>
+
+    <delete id="deleteWeiboComment">
+        DELETE FROM comment WHERE id = #{commentId}
+    </delete>
+
+    <select id="currentUserWeiboComment" resultType="spring.personalSite.model.Comment">
+        SELECT * FROM comment join weibo
+        on comment.weiboId = weibo.id
+        WHERE comment.id = #{commentId} AND
+                (comment.userId = #{commentUserId} OR weibo.userId = #{weiboUserId})
+    </select>
+
+    <delete id="deleteWeiboById">
+        DELETE FROM weibo WHERE id = #{id}
+    </delete>
+
+    <update id="updateWeiboById">
+        UPDATE weibo SET content = #{content} WHERE id = #{id}
+    </update>
+
+    <update id="updateCommentById">
+        UPDATE comment SET content = #{content} WHERE id = #{id}
+    </update>
+
+    <select id="currentUserWeiboById" resultType="spring.personalSite.model.Weibo">
+        SELECT * FROM weibo WHERE id = #{id} AND userId = #{userId}
+    </select>
+
+    <resultMap id="currentUserWeibosWithCommentsResultMap" type="spring.personalSite.model.WeiboWithComments">
+        <id property="id" column="weibo_id"/>
+        <result property="content" column="weibo_content"/>
+        <result property="userId" column="weibo_user_id"/>
+        <collection property="comments" ofType="spring.personalSite.model.Comment" >
+            <id property="id" column="comment_id"/>
+            <result property="content" column="comment_content"/>
+            <result property="userId" column="comment_user_id"/>
+            <result property="weiboId" column="comment_weibo_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="currentUserWeibosWithComments" resultMap="currentUserWeibosWithCommentsResultMap">
+        SELECT
+                weibo.id as weibo_id,
+                weibo.content as weibo_content,
+                weibo.userId as weibo_user_id,
+                comment.id as comment_id,
+                comment.content as comment_content,
+                comment.weiboId as comment_weibo_id,
+                comment.userId as comment_user_id
+        FROM weibo
+                     JOIN comment ON comment.weiboId = weibo.id
+        WHERE weibo.userId = #{userId}
+    </select>
+
+    <select id="weiboCountFromUserId" resultType="int">
+        SELECT count(*) FROM weibo WHERE userId = #{userId};
+    </select>
+
+    <select id="followeeCountFromUserId" resultType="int">
+        SELECT count(*) FROM follow WHERE followerId = #{userId};
+    </select>
+</mapper>

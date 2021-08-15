@@ -1,0 +1,19 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 和 java mapper 的类名一样，从包名开始打，有自动补全-->
+<mapper namespace="spring.personalSite.mapper.MapperMessage">
+
+    <select id="messageFromUsername" resultType="spring.personalSite.model.Message">
+        SELECT * FROM message WHERE author = #{username}
+    </select>
+
+    <select id="allMessages" resultType="spring.personalSite.model.Message">
+        SELECT * FROM message
+    </select>
+
+    <insert id="addMessage">
+        INSERT INTO message (author, content) VALUES (#{username}, #{content})
+    </insert>
+
+</mapper>

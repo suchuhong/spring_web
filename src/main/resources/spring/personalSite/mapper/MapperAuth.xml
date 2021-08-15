@@ -1,0 +1,43 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 和 java mapper 的类名一样，从包名开始打，有自动补全-->
+<mapper namespace="spring.personalSite.mapper.MapperAuth">
+    <select id="allUsers" resultType="spring.personalSite.model.User">
+        SELECT * FROM user
+    </select>
+
+    <select id="userFromUsername" resultType="spring.personalSite.model.User">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <select id="userFromUsernameAndPassword" resultType="spring.personalSite.model.User">
+        SELECT * FROM user WHERE username = #{param1} AND password = #{param2}
+    </select>
+
+    <insert id="addSessionId">
+        INSERT INTO session (username, sessionId) VALUES (#{param1}, #{param2})
+    </insert>
+
+    <select id="usernameFromSessionId" resultType="spring.personalSite.model.User">
+        SELECT * FROM user join session on session.username = user.username where session.sessionId = #{sessionId}
+<!--        以下语句 resultType 不是 spring.web19.model.User -->
+<!--        SELECT * FROM session join user on session.username = user.username where session.sessionId = #{sessionId}-->
+    </select>
+
+    <insert id="addUser">
+        INSERT INTO user (username, password, role, salt) VALUES (#{username}, #{saltedPassword}, #{userRole}, #{salt})
+    </insert>
+
+    <update id="updateUserInfo">
+        UPDATE user SET password = #{password} WHERE username = #{username}
+    </update>
+
+    <select id="userFromId" resultType="spring.personalSite.model.User">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <update id="setAvatar">
+        UPDATE user SET avatar = #{avatarName} WHERE username = #{username}
+    </update>
+</mapper>

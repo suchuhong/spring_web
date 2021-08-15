@@ -1,0 +1,39 @@
+import java.nio.charset.Charset
+
+plugins {
+    id 'java'
+    // spring boot 能直接从 gradle 运行
+    id 'org.springframework.boot' version '2.4.3'
+    // 替换了 gradle 内置的依赖管理，能利用 spring 项目本身的 maven 依赖文件
+    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id "war"
+}
+
+sourceCompatibility = '11'
+
+println "测试全局语言设置"
+println "Charset.defaultCharset: ${Charset.defaultCharset()}"
+println "File encoding: ${System.getProperty("file.encoding")}"
+println "JAVA_OPTS :${System.getenv("JAVA_OPTS")}"
+println "GRADLE_OPTS: ${System.getenv("GRADLE_OPTS")}"
+
+group = 'personalSite'
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/public/' }
+    maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+    maven { url 'https://maven.aliyun.com/repository/google' }
+    maven { url 'https://maven.aliyun.com/repository/spring' }
+    maven { url 'https://maven.aliyun.com/repository/spring-plugin' }
+    maven { url 'https://maven.aliyun.com/repository/central' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+    implementation 'mysql:mysql-connector-java:8.0.17'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.5.3'
+}
+

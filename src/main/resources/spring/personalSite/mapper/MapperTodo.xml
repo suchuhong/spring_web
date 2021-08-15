@@ -1,0 +1,27 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 和 java mapper 的类名一样，从包名开始打，有自动补全-->
+<mapper namespace="spring.personalSite.mapper.MapperTodo">
+
+    <select id="currentUserTodos" resultType="spring.personalSite.model.Todo">
+        SELECT * FROM todo WHERE userId = #{userId}
+    </select>
+
+    <insert id="addTodo">
+        INSERT INTO todo (content, userId) VALUES (#{content}, #{userId})
+    </insert>
+
+    <select id="currentUserTodo" resultType="spring.personalSite.model.Todo">
+        SELECT * FROM todo WHERE id = #{todoId} AND userId = #{userId}
+    </select>
+
+    <delete id="deleteTodoById">
+        DELETE FROM todo WHERE id = #{id}
+    </delete>
+
+    <update id="updateTodoById">
+        UPDATE todo SET content = #{content} WHERE id = #{id}
+    </update>
+
+</mapper>

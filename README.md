@@ -1,6 +1,12 @@
 #  Readme
 
-java web 项目
+网站：[www.xiongsansu.com](www.xiongsansu.com)
+
+用户名：**test1**
+
+密码：**test1**
+
+![](演示.gif)
 
 ## web_weibo
 
@@ -9,6 +15,15 @@ java web 项目
 ## 使用说明
 
 ```bash
+# 安装软件
+apt install -y openjdk-11-jdk
+apt install -y mysql-server
+apt install redis-server
+redis-cli
+```
+
+```bash
+# 使用项目运行
 scp -r ..\spring_web\ root@ip:~
 bash gradlew bootRun
 nohup bash gradlew bootRun &
@@ -16,13 +31,6 @@ nohup bash gradlew bootRun &
 ```
 
 ```bash
-# 安装软件
-# 只有第一次配置需要执行
-apt install -y openjdk-11-jdk
-apt install -y mysql-server
-apt install redis-server
-redis-cli
-
 # 打包命令，或者在 ide 里面点击 bootWar
 ./gradlw bootWar
 # 复制文件
